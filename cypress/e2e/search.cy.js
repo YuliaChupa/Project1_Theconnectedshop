@@ -24,6 +24,7 @@ describe('Open Homepage', () => {
     .and('have.attr', 'aria-label', 'Search...') 
     .and('have.attr', 'placeholder', 'Search...')
     .and('have.attr', 'autofocus');
+  // Задаємо вірний запит
     cy.get('input.Search__Input.Heading[name="q"]')     
     .type('Water Leak Detector')
     .should('have.value','Water Leak Detector')
@@ -38,4 +39,24 @@ describe('Open Homepage', () => {
     expect(resultsNumber).to.be.greaterThan(1); 
         });
     });
-});
+    it('Wrong query', () => {
+//Search button
+cy.get('a[data-action="toggle-search"]').eq(0)
+.should('exist')        
+.and('be.visible')
+.and('have.attr','href','/search')
+.click();
+
+// Задаємо помилковий запит
+ cy.get('input.Search__Input.Heading[name="q"]')     
+ .type('W"at?er88')
+ .should('have.value','W"at?er88')
+ 
+ //Первірка результатів
+ cy.get(':nth-child(1) > .Segment > .Segment__Content > p').eq(0)
+ .should('have.text','No results could be found')
+  
+
+
+      }); 
+    });
